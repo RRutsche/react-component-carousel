@@ -4,7 +4,7 @@ module.exports = function (grunt) {
 	require('load-grunt-tasks')(grunt);
 
 	// set grunt settings
-	var port = grunt.option('port') || grunt.option('p') || 80;
+	var port = grunt.option('port') || grunt.option('p') || 8080;
 
 	// Project configuration.
 	grunt.initConfig({
@@ -88,4 +88,5 @@ module.exports = function (grunt) {
 
 	grunt.registerTask('build-dev', ['clean:build', 'react']);
 	grunt.registerTask('default', ['logSettings', 'build-dev', 'connect', 'watch']);
+	grunt.registerTask('dev', ['logSettings', 'build-dev']);
 };

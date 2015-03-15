@@ -8,7 +8,7 @@
 npm install react-component-carousel
 ```
 
-## Use
+## Usage
 
 ```js
 var Carousel = require('react-component-carousel');

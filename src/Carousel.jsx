@@ -21,20 +21,47 @@ var Carousel = React.createClass({
 	},
 	render: function() {
 
-		var classes = React.addons.classSet({
+		var carouselStyles = {
+			whiteSpace: 'nowrap',
+			position: 'relative',
+			width: '100%',
+			textAlign: 'left',
+
+		};
+		var innerStyles = {
+			position: 'absolute',
+			top: '0',
+			bottom: '0',
+			left: '0',
+			right: '0',
+			overflow: 'initial'
+		};
+		var transitionType = !this.state.touched ? 'all 200ms ease-out':'';
+		var itemsStyles = {
+			opacity: this.state.initialized ? '1':'0',
+			height: '100%',
+			mozTransition: transitionType,
+  			oTransition: transitionType,
+  			WebkitTransition: transitionType,
+  			msTransition: transitionType,
+  			transition: transitionType,
+		};
+		var innerClasses = React.addons.classSet({
 						'carousel-items': true,
 						'touch-released': !this.state.touched,
 						'initialized': this.state.initialized
 		  			});
 		return ( 
-			<div className="carousel">
-				<div className="carousel-inner">
-					<div 	ref="carouselItems" className={classes} 
+			<div className="carousel" style={carouselStyles}>
+				<div className="carousel-inner" style={innerStyles}>
+					<div 	ref="carouselItems" className={innerClasses} style={itemsStyles}
 							onTouchStart={this.onTouchStart} onTouchMove={this.onTouchMove}	onTouchEnd={this.onTouchEnd}> 
 						{
 							this.props.children.map(function(child) {
 								var style = {
-									width: this.state.width
+									width: this.state.width,
+									textAlign: 'center',
+									display: 'inline-block'
 								};
 								return <div style={style} className="carousel-item">{child}</div>;
 							}, this)
@@ -48,6 +75,11 @@ var Carousel = React.createClass({
 
 	componentDidMount: function() {
 		this.initCarouselDimensions();
+	},
+
+	componentDidUpdate: function(prevProps, prevState) {
+		console.log(this.state.touched);
+		console.log(this.getDOMNode());
 	},
 
 	initCarouselDimensions: function() {
