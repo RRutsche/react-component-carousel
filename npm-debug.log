@@ -1,0 +1,88 @@
+0 info it worked if it ends with ok
+1 verbose cli [ 'node',
+1 verbose cli   '/usr/local/bin/npm',
+1 verbose cli   'install',
+1 verbose cli   'jsx-hint',
+1 verbose cli   '--save-dev' ]
+2 info using npm@1.4.28
+3 info using node@v0.10.32
+4 verbose readDependencies using package.json deps
+5 verbose cache add [ 'jsx-hint', null ]
+6 verbose cache add name=undefined spec="jsx-hint" args=["jsx-hint",null]
+7 verbose parsed url { protocol: null,
+7 verbose parsed url   slashes: null,
+7 verbose parsed url   auth: null,
+7 verbose parsed url   host: null,
+7 verbose parsed url   port: null,
+7 verbose parsed url   hostname: null,
+7 verbose parsed url   hash: null,
+7 verbose parsed url   search: null,
+7 verbose parsed url   query: null,
+7 verbose parsed url   pathname: 'jsx-hint',
+7 verbose parsed url   path: 'jsx-hint',
+7 verbose parsed url   href: 'jsx-hint' }
+8 silly lockFile 24adbe27-jsx-hint jsx-hint
+9 verbose lock jsx-hint /Users/richard/.npm/24adbe27-jsx-hint.lock
+10 silly lockFile 24adbe27-jsx-hint jsx-hint
+11 silly lockFile 24adbe27-jsx-hint jsx-hint
+12 verbose addNamed [ 'jsx-hint', '' ]
+13 verbose addNamed [ null, '*' ]
+14 silly lockFile 75ca2c29-jsx-hint jsx-hint@
+15 verbose lock jsx-hint@ /Users/richard/.npm/75ca2c29-jsx-hint.lock
+16 silly addNameRange { name: 'jsx-hint', range: '*', hasData: false }
+17 verbose request where is /jsx-hint
+18 verbose request registry https://registry.npmjs.org/
+19 verbose request id b7240036cab15eb8
+20 verbose url raw /jsx-hint
+21 verbose url resolving [ 'https://registry.npmjs.org/', './jsx-hint' ]
+22 verbose url resolved https://registry.npmjs.org/jsx-hint
+23 verbose request where is https://registry.npmjs.org/jsx-hint
+24 info trying registry request attempt 1 at 17:46:23
+25 http GET https://registry.npmjs.org/jsx-hint
+26 http 404 https://registry.npmjs.org/jsx-hint
+27 verbose headers { date: 'Sun, 15 Mar 2015 16:46:23 GMT',
+27 verbose headers   server: 'CouchDB/1.5.0 (Erlang OTP/R16B03)',
+27 verbose headers   'content-type': 'application/json',
+27 verbose headers   'cache-control': 'max-age=0',
+27 verbose headers   'content-length': '52',
+27 verbose headers   'accept-ranges': 'bytes',
+27 verbose headers   via: '1.1 varnish',
+27 verbose headers   age: '0',
+27 verbose headers   'x-served-by': 'cache-fra1228-FRA',
+27 verbose headers   'x-cache': 'MISS',
+27 verbose headers   'x-cache-hits': '0',
+27 verbose headers   'x-timer': 'S1426437983.466377,VS0,VE421',
+27 verbose headers   'keep-alive': 'timeout=10, max=50',
+27 verbose headers   connection: 'Keep-Alive' }
+28 silly registry.get cb [ 404,
+28 silly registry.get   { date: 'Sun, 15 Mar 2015 16:46:23 GMT',
+28 silly registry.get     server: 'CouchDB/1.5.0 (Erlang OTP/R16B03)',
+28 silly registry.get     'content-type': 'application/json',
+28 silly registry.get     'cache-control': 'max-age=0',
+28 silly registry.get     'content-length': '52',
+28 silly registry.get     'accept-ranges': 'bytes',
+28 silly registry.get     via: '1.1 varnish',
+28 silly registry.get     age: '0',
+28 silly registry.get     'x-served-by': 'cache-fra1228-FRA',
+28 silly registry.get     'x-cache': 'MISS',
+28 silly registry.get     'x-cache-hits': '0',
+28 silly registry.get     'x-timer': 'S1426437983.466377,VS0,VE421',
+28 silly registry.get     'keep-alive': 'timeout=10, max=50',
+28 silly registry.get     connection: 'Keep-Alive' } ]
+29 silly lockFile 75ca2c29-jsx-hint jsx-hint@
+30 silly lockFile 75ca2c29-jsx-hint jsx-hint@
+31 error 404 404 Not Found: jsx-hint
+31 error 404
+31 error 404 'jsx-hint' is not in the npm registry.
+31 error 404 You should bug the author to publish it
+31 error 404 It was specified as a dependency of 'react-component-carousel'
+31 error 404
+31 error 404 Note that you can also install from a
+31 error 404 tarball, folder, or http url, or git url.
+32 error System Darwin 14.0.0
+33 error command "node" "/usr/local/bin/npm" "install" "jsx-hint" "--save-dev"
+34 error cwd /Users/richard/Development/workspaceWeb/react-component-carousel
+35 error node -v v0.10.32
+36 error npm -v 1.4.28
+37 error code E404
+38 verbose exit [ 1, true ]
