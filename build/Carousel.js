@@ -16,57 +16,42 @@ var Carousel = React.createClass({displayName: "Carousel",
 		return {
 			touched: false,
 			width: null,
-			initialized: false
+			initialized: false,
+			activeItem: 0
 		};
 	},
 	render: function() {
+		var innerClasses, 
+			items = [],
+			dots = [];
 
-		var carouselStyles = {
-			whiteSpace: 'nowrap',
-			position: 'relative',
-			width: '100%',
-			textAlign: 'left',
+		innerClasses = React.addons.classSet({
+					'carousel-items': true,
+					'touch-released': !this.state.touched,
+					'initialized': this.state.initialized
+				});
 
-		};
-		var innerStyles = {
-			position: 'absolute',
-			top: '0',
-			bottom: '0',
-			left: '0',
-			right: '0',
-			overflow: 'initial'
-		};
-		var transitionType = !this.state.touched ? 'all 200ms ease-out':'';
-		var itemsStyles = {
-			opacity: this.state.initialized ? '1':'0',
-			height: '100%',
-			mozTransition: transitionType,
-  			oTransition: transitionType,
-  			WebkitTransition: transitionType,
-  			msTransition: transitionType,
-  			transition: transitionType,
-		};
-		var innerClasses = React.addons.classSet({
-						'carousel-items': true,
-						'touch-released': !this.state.touched,
-						'initialized': this.state.initialized
-		  			});
+		this.props.children.forEach(function(child, index) {
+			var style = {
+				width: this.state.width,
+				textAlign: 'center',
+				display: 'inline-block'
+			};
+			items.push(React.createElement("div", {style: style, ref: "item_"+index, className: "carousel-item"}, child));
+			dots.push(React.createElement("div", {	className: "dot " + (index === this.state.activeItem ? "active":""), 
+							onClick: this.onDotClick.bind(this, index), 
+							style: this.getDotStyles()}));
+		}, this);
+		console.log(this.carouselHeight);
 		return ( 
-			React.createElement("div", {className: "carousel", style: carouselStyles}, 
-				React.createElement("div", {className: "carousel-inner", style: innerStyles}, 
-					React.createElement("div", {	ref: "carouselItems", className: innerClasses, style: itemsStyles, 
+			React.createElement("div", {className: "carousel", style: this.getCarouselStyles()}, 
+				React.createElement("div", {className: "carousel-inner", style: this.getCarouselInnerStyles()}, 
+					React.createElement("div", {	ref: "carouselItems", className: innerClasses, style: this.getCarouselItemStyles(), 
 							onTouchStart: this.onTouchStart, onTouchMove: this.onTouchMove, 	onTouchEnd: this.onTouchEnd}, 
-						
-							this.props.children.map(function(child) {
-								var style = {
-									width: this.state.width,
-									textAlign: 'center',
-									display: 'inline-block'
-								};
-								return React.createElement("div", {style: style, className: "carousel-item"}, child);
-							}, this)
-						
-						
+						items
+					), 
+					React.createElement("div", {className: "dots"}, 
+						dots
 					)
 				)
 			)
@@ -78,14 +63,16 @@ var Carousel = React.createClass({displayName: "Carousel",
 	},
 
 	componentDidUpdate: function(prevProps, prevState) {
-		console.log(this.state.touched);
-		console.log(this.getDOMNode());
+		// console.log(this.state.touched);
+		// console.log(this.getDOMNode());
 	},
 
 	initCarouselDimensions: function() {
 		this.carousel = this.refs.carouselItems.getDOMNode();
 		this.carousel.style.width = this.getDOMNode().clientWidth * this.props.children.length + "px";
 		this.minCarouselPos = -(this.getDOMNode().clientWidth * (this.props.children.length-1));
+		this.carouselHeight = this.refs.item_0 ? this.refs.item_0.getDOMNode().clientHeight : 0;
+		console.log(this.refs.item_0);
 		this.setState({
 			width: this.getDOMNode().clientWidth,
 			initialized: true
@@ -110,16 +97,19 @@ var Carousel = React.createClass({displayName: "Carousel",
 		this.touchTime = new Date();
 		this.touchSpeed = newTouchPos - this.touchPos;
 		this.touchPos = newTouchPos;
-		this.carousel.style.webkitTransform = 'translate3d('+(this.carouselPos + (this.touchPos*2))+'px,0px,0px)';
+		this.carousel.style.webkitTransform = 'translate3d('+(this.carouselPos + (this.touchPos))+'px,0px,0px)';
 	},
 
 	onTouchEnd: function(event) {
 		event.preventDefault();
 		var touchobj = event.changedTouches[0];
 
-		this.carouselPos = this.state.width * Math.round((this.carouselPos + (this.touchPos*2)) / this.state.width);
-		if (Math.abs(this.touchSpeed) > 30) {
-			this.carouselPos = this.state.width * Math.round((this.carouselPos + (this.touchPos*1.2)) / this.state.width);
+		// detect swipe fling: show next carousel item
+		if (Math.abs(this.touchSpeed) > 15) {
+			this.carouselPos = this.carouselPos + (this.sign(this.touchPos) * this.state.width);
+		} else {
+			// normal swipe behaviour instead
+			this.carouselPos = this.state.width * Math.round((this.carouselPos + (this.touchPos)) / this.state.width);
 		}
 
 		// check min and max carouselpos and correct currentpos if necessary
@@ -131,9 +121,62 @@ var Carousel = React.createClass({displayName: "Carousel",
 
 		this.touchSpeed = 0;
 		this.setState({
-			touched: false
+			touched: false,
+			activeItem: Math.abs(this.carouselPos / this.state.width)
 		});
 		this.carousel.style.webkitTransform = 'translate3d('+this.carouselPos+'px,0px,0px)';
+	},
+
+	onDotClick: function(index) {
+		console.log(index);
+	},
+
+	sign: function(x) {
+		return x > 0 ? 1 : x < 0 ? - 1 : x;
+	},
+
+	getCarouselItemStyles: function() {
+		var transitionType = !this.state.touched ? 'all 200ms ease-out':'';
+		return 	{
+					opacity: this.state.initialized ? '1':'0',
+					height: '100%',
+					mozTransition: transitionType,
+					oTransition: transitionType,
+					WebkitTransition: transitionType,
+					msTransition: transitionType,
+					transition: transitionType,
+				};
+	},
+
+	getCarouselInnerStyles: function() {
+		return {
+				position: 'absolute',
+				top: '0',
+				bottom: '0',
+				left: '0',
+				right: '0',
+				overflow: 'initial'
+			};
+	},
+
+	getCarouselStyles: function() {
+		return {
+					whiteSpace: 'nowrap',
+					position: 'relative',
+					width: '100%',
+					textAlign: 'left',
+				};
+	},
+
+	getDotStyles: function() {
+		return {
+			width: '10px',
+			height: '10px',
+			border: '1px solid black',
+			borderRadius: '50%',
+			display: 'inline-block',
+			margin: '5px'
+		}
 	}
 });
 
